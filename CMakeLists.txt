@@ -18,33 +18,33 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 set (SOURCE
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    chunks.cpp
-    chunks.h
-    commands.cpp
-    commands.h
-    qhexedit.cpp
-    qhexedit.h
-    registermodel.cpp
-    registermodel.h
-    registeritem.cpp
-    registeritem.h
-    simulator.cpp
-    simulator.h
-    loaddialog.cpp
-    loaddialog.h
-    loaddialog.ui
-    mapreader.cpp
-    mapreader.h
-    breakpoint.cpp
-    breakpoint.h
-    codewidget.cpp
-    codewidget.h
-    options.cpp
-    options.h
+        src/main.cpp
+        src/ui/mainwindow.cpp
+        src/ui/mainwindow.h
+        src/ui/mainwindow.ui
+        src/qhexedit/chunks.cpp
+        src/qhexedit/chunks.h
+        src/qhexedit/commands.cpp
+        src/qhexedit/commands.h
+        src/qhexedit/qhexedit.cpp
+        src/qhexedit/qhexedit.h
+        src/simulator/registermodel.cpp
+        src/simulator/registermodel.h
+        src/simulator/registeritem.cpp
+        src/simulator/registeritem.h
+        src/simulator/simulator.cpp
+        src/simulator/simulator.h
+        src/ui/loaddialog.cpp
+        src/ui/loaddialog.h
+        src/ui/loaddialog.ui
+        src/simulator/mapreader.cpp
+        src/simulator/mapreader.h
+        src/simulator/breakpoint.cpp
+        src/simulator/breakpoint.h
+        src/ui/codewidget.cpp
+        src/ui/codewidget.h
+        src/options.cpp
+        src/options.h
     )
 
 

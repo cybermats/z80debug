@@ -63,7 +63,7 @@
           <cstring></cstring>
          </property>
         </widget>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QTreeView" name="treeView">
@@ -222,12 +222,12 @@
   <customwidget>
    <class>QHexEdit</class>
    <extends>QFrame</extends>
-   <header>qhexedit.h</header>
+   <header>src/qhexedit/qhexedit.h</header>
   </customwidget>
   <customwidget>
    <class>CodeWidget</class>
    <extends>QPlainTextEdit</extends>
-   <header location="global">codewidget.h</header>
+   <header>src/ui/codewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

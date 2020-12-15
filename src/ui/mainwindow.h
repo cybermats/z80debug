@@ -3,11 +3,11 @@
 
 #include <QMainWindow>
 #include <QFutureWatcher>
-#include "registermodel.h"
-#include "simulator.h"
+#include "src/simulator/registermodel.h"
+#include "src/simulator/simulator.h"
 #include "loaddialog.h"
-#include "breakpoint.h"
-#include "options.h"
+#include "src/simulator/breakpoint.h"
+#include "src/options.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

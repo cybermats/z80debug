@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QPlainTextEdit>
 
-#include "simulator.h"
+#include "src/simulator/simulator.h"
 
 class CodeWidget : public QPlainTextEdit
 {
