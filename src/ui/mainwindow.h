@@ -20,11 +20,11 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(Simulator *sim, Options *options, QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
 private slots:
     void on_actionLoad_triggered();
-    void on_actionLoad_finished(int result);
+    void onActionLoad_finished(int result);
 
     void on_actionReset_triggered();
 
@@ -38,7 +38,7 @@ private slots:
 
 private:
     void refresh();
-    void loadFile(QString filename, size_t address = 0, size_t offset = 0, size_t length = 0);
+    void loadFile(const QString& filename, size_t address = 0, size_t offset = 0, size_t length = 0);
 
     void on_futureWatcher_finished();
 

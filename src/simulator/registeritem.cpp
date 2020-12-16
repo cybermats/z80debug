@@ -1,5 +1,4 @@
 #include "registeritem.h"
-#include <QString>
 #include <QStringBuilder>
 #include <QFont>
 #include <QColor>

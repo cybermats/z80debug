@@ -33,11 +33,6 @@ bool MapReader::load(QString filename)
                 bool ok;
                 auto addr = addrStr.toUInt(&ok, 16);
                 if (ok) {
-                    int a = 0;
-                    if (addr > 0 && m_positionLookup.find(addr) != m_positionLookup.end())
-                        a = 1;
-
-
                     m_positionLookup[addr] = position;
                     m_pcLookup.push_back(std::make_pair(position, addr));
                 }

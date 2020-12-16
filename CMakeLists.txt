@@ -39,7 +39,6 @@ set (SOURCE
         src/ui/loaddialog.ui
         src/simulator/mapreader.cpp
         src/simulator/mapreader.h
-        src/simulator/breakpoint.cpp
         src/simulator/breakpoint.h
         src/ui/codewidget.cpp
         src/ui/codewidget.h

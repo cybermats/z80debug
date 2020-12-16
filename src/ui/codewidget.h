@@ -10,8 +10,7 @@ class CodeWidget : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    CodeWidget(const QString &text, QWidget *parent = nullptr);
-    CodeWidget(QWidget *parent = nullptr);
+  explicit CodeWidget(QWidget *parent = nullptr);
 
     void setSimulator(Simulator *sim);
 
@@ -20,7 +19,7 @@ public:
     void refresh();
 
 protected:
-    virtual void contextMenuEvent(QContextMenuEvent *e) override;
+    void contextMenuEvent(QContextMenuEvent *e) override;
 
 private:
     Simulator *m_simulator = nullptr;

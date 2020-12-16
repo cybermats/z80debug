@@ -221,7 +221,7 @@ qint64 QHexEdit::cursorPosition()
 
 void QHexEdit::setData(const char *ba, size_t size)
 {
-  bool ok = _chunks->setData(ba, size);
+  _chunks->setData(ba, size);
   init();
   dataChangedPrivate();
 }
@@ -725,7 +725,7 @@ void QHexEdit::keyPressEvent(QKeyEvent *event)
             else
                 key = int(event->text()[0].toLower().toLatin1());
 
-            if ((((key >= '0' && key <= '9') || (key >= 'a' && key <= 'f')) && _editAreaIsAscii == false)
+            if ((((key >= '0' && key <= '9') || (key >= 'a' && key <= 'f')) && !_editAreaIsAscii)
                 || (key >= ' ' && _editAreaIsAscii))
             {
                 if (getSelectionBegin() != getSelectionEnd())
@@ -744,7 +744,7 @@ void QHexEdit::keyPressEvent(QKeyEvent *event)
                 }
 
                 // If insert mode, then insert a byte
-                if (_overwriteMode == false)
+                if (!_overwriteMode)
                     if ((_cursorPosition % 2) == 0)
                         insert(_bPosCurrent, char(0));
 

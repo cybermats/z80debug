@@ -14,7 +14,7 @@ It currently handles the basics:
 
 To build, you need:
 
-* [Qt 5.15](www.qt.io)
+* [Qt 5.15](https://www.qt.io/)
 * CMake - Comes with qt
 * [libz80](https://github.com/ggambetta/libz80) 2.1.0 from ggambetta
 

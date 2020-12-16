@@ -25,7 +25,7 @@ LoadDialog::~LoadDialog()
     delete ui;
 }
 
-QVector<LoadDialog::FileLoadInfo> LoadDialog::getFileLoadInfo() const
+QVector<LoadDialog::FileLoadInfo> LoadDialog::getFileLoadInfo()
 {
     QVector<LoadDialog::FileLoadInfo> result;
     for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {

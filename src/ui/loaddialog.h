@@ -32,9 +32,9 @@ public:
 
 
     explicit LoadDialog(QWidget *parent = nullptr);
-    ~LoadDialog();
+    ~LoadDialog() override;
 
-    QVector<FileLoadInfo> getFileLoadInfo() const;
+    QVector<FileLoadInfo> getFileLoadInfo() ;
 
 public slots:
     void onCellDoubleClicked(int row, int column);
@@ -47,10 +47,8 @@ public slots:
 private:
     void init();
     void addRow();
-    void removeRow();
-    void clear();
 
-    Ui::LoadDialog *ui;
+    Ui::LoadDialog *ui{};
 };
 
 #endif // LOADDIALOG_H

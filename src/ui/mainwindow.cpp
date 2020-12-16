@@ -1,6 +1,5 @@
 #include <QMessageBox>
 #include <QFileDialog>
-#include <QFile>
 #include <QTextCursor>
 #include <QtConcurrent/QtConcurrent>
 
@@ -14,6 +13,7 @@ MainWindow::MainWindow(Simulator *sim, Options *options, QWidget *parent)
     , m_regModel(sim->context(), this)
     , m_simulator(sim)
     , m_options(options)
+    , m_loadDialog(new LoadDialog(this))
 {
     ui->setupUi(this);
     ui->treeView->setModel(&m_regModel);
@@ -22,9 +22,8 @@ MainWindow::MainWindow(Simulator *sim, Options *options, QWidget *parent)
     ui->hexEdit->setData(m_simulator->memPtr(), m_simulator->memSize());
     ui->codeTextEdit->setSimulator(m_simulator);
     ui->codeTextEdit->setBreakpoints(&m_breakpoints);
-    m_loadDialog = new LoadDialog(this);
 
-    connect(m_loadDialog, &LoadDialog::finished, this, &MainWindow::on_actionLoad_finished);
+    connect(m_loadDialog, &LoadDialog::finished, this, &MainWindow::onActionLoad_finished);
     connect(ui->stepButton, &QPushButton::released, this, &MainWindow::on_actionStep_triggered);
     connect(&m_futureWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::on_futureWatcher_finished);
 }
@@ -45,7 +44,7 @@ void MainWindow::on_actionLoad_triggered()
     refresh();
 }
 
-void MainWindow::on_actionLoad_finished(int result)
+void MainWindow::onActionLoad_finished(int result)
 {
     if (result == QDialog::Accepted) {
         qDebug() << "Loading: ";
@@ -96,7 +95,7 @@ void MainWindow::refresh()
     ui->codeTextEdit->refresh();
 }
 
-void MainWindow::loadFile(QString filename, size_t address, size_t offset, size_t length)
+void MainWindow::loadFile(const QString& filename, size_t address, size_t offset, size_t length)
 {
     if (!filename.isEmpty()) {
         QFileInfo fileInfo(filename);

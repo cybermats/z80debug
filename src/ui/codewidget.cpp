@@ -2,12 +2,6 @@
 #include <QDebug>
 #include "codewidget.h"
 
-CodeWidget::CodeWidget(const QString &text, QWidget *parent)
-    : QPlainTextEdit(text, parent)
-{
-
-}
-
 CodeWidget::CodeWidget(QWidget *parent)
     : QPlainTextEdit(parent)
 {
@@ -38,7 +32,7 @@ void CodeWidget::refresh()
             auto cursor = textCursor();
             cursor.setPosition(pos);
 
-            QTextEdit::ExtraSelection selection;
+            QTextEdit::ExtraSelection selection = QTextEdit::ExtraSelection();
             selection.format.setBackground(Qt::red);
             selection.format.setProperty(QTextFormat::FullWidthSelection, true);
             selection.cursor = cursor;
@@ -53,7 +47,7 @@ void CodeWidget::refresh()
         cursor.setPosition(codePos);
         setTextCursor(cursor);
 
-        QTextEdit::ExtraSelection selection;
+        QTextEdit::ExtraSelection selection = QTextEdit::ExtraSelection();
         QColor lineColor = QColor(Qt::yellow);
 
         selection.format.setBackground(lineColor);
@@ -87,7 +81,7 @@ void CodeWidget::contextMenuEvent(QContextMenuEvent *e)
         }
     }
     bool updated = false;
-    QMenu *menu = new QMenu(this);
+    auto *menu = new QMenu(this);
     if (found >= 0) {
         menu->addAction("Remove Breakpoint");
         if (menu->exec(e->globalPos())) {

@@ -13,7 +13,7 @@ public:
         : m_active(true)
     {}
 
-    virtual ~Breakpoint(){}
+    virtual ~Breakpoint()= default;
 
     virtual bool isAsserted(const Z80Context *ctx, const char *memory) const = 0;
     bool isActive() const { return m_active; }
@@ -34,11 +34,11 @@ private:
 class CodeBreakpoint : public Breakpoint
 {
 public:
-    CodeBreakpoint(ushort pc)
+    explicit CodeBreakpoint(ushort pc)
         : m_pc(pc)
     {
     }
-    virtual bool isAsserted(const Z80Context *ctx, const char *) const override {
+    bool isAsserted(const Z80Context *ctx, const char *) const override {
         return ctx->PC == m_pc;
     }
 

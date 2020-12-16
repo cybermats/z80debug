@@ -1,5 +1,4 @@
 #include <QFile>
-#include <QFileInfo>
 #include <QDataStream>
 #include <QTextStream>
 
@@ -69,7 +68,7 @@ bool Simulator::assertBreakpoint(const Breakpoint *bp) const
 
 byte Simulator::read(ushort address)
 {
-    return m_memory[address];
+    return static_cast<byte>(m_memory[address]);
 }
 
 void Simulator::write(ushort address, byte data)

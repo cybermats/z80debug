@@ -2,14 +2,6 @@
 
 #include <QApplication>
 
-
-#include <QBuffer>
-#include <vector>
-#include <iostream>
-#include <string>
-
-#include "options.h"
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

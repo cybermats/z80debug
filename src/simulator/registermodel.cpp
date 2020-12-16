@@ -5,8 +5,6 @@ RegisterModel::RegisterModel(Z80Context *ctx, QObject *parent)
     : QAbstractItemModel(parent),
       m_ctx(ctx)
 {
-    m_prevCtx = new Z80Context(*m_ctx);
-
     m_rootItem = new RegisterItem("Root");
     setupModelData(m_ctx, m_rootItem);
     m_rootItem->benchmark();

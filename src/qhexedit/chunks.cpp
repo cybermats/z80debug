@@ -280,7 +280,8 @@ int Chunks::getChunkIndex(qint64 absPos)
 
     if (foundIdx == -1)
     {
-        Chunk newChunk;
+        Chunk newChunk = Chunk();
+        newChunk.data = QByteArray();
         qint64 readAbsPos = absPos - ioDelta;
         qint64 readPos = (readAbsPos & READ_CHUNK_MASK);
         newChunk.data.append(_buffer + readPos, CHUNK_SIZE);
