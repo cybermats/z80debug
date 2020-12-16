@@ -56,279 +56,277 @@ QHexEdit is based on QIODevice, that's why QHexEdit can handle big amounts of
 data. The size of edited data can be more then two gigabytes without any
 restrictions.
 */
-class QHEXEDIT_API QHexEdit : public QAbstractScrollArea
-{
-    Q_OBJECT
+class QHEXEDIT_API QHexEdit : public QAbstractScrollArea {
+ Q_OBJECT
 
-public:
-    /*! Creates an instance of QHexEdit.
-    \param parent Parent widget of QHexEdit.
+ public:
+  /*! Creates an instance of QHexEdit.
+  \param parent Parent widget of QHexEdit.
+  */
+  QHexEdit(QWidget *parent = 0);
+
+  // Access to data of qhexedit
+
+  /*! Gives back the data as a QByteArray starting at position \param pos and
+  delivering \param count bytes.
+  */
+  QByteArray dataAt(qint64 pos, qint64 count = -1);
+
+  /*! Gives back the data into a \param iODevice starting at position \param pos
+  and delivering \param count bytes.
+  */
+  bool write(char *buffer, qint64 size, qint64 pos = 0, qint64 count = -1);
+
+
+  // Char handling
+
+  /*! Inserts a char.
+  \param pos Index position, where to insert
+  \param ch Char, which is to insert
+  The char will be inserted and size of data grows.
+  */
+  void insert(qint64 pos, char ch);
+
+  /*! Removes len bytes from the content.
+  \param pos Index position, where to remove
+  \param len Amount of bytes to remove
+  */
+  void remove(qint64 pos, qint64 len = 1);
+
+  /*! Replaces a char.
+  \param pos Index position, where to overwrite
+  \param ch Char, which is to insert
+  The char will be overwritten and size remains constant.
+  */
+  void replace(qint64 pos, char ch);
+
+
+  // ByteArray handling
+
+  /*! Inserts a byte array.
+  \param pos Index position, where to insert
+  \param ba QByteArray, which is to insert
+  The QByteArray will be inserted and size of data grows.
+  */
+  void insert(qint64 pos, const QByteArray &ba);
+
+  /*! Replaces \param len bytes with a byte array \param ba
+  \param pos Index position, where to overwrite
+  \param ba QByteArray, which is inserted
+  \param len count of bytes to overwrite
+  The data is overwritten and size of data may change.
+  */
+  void replace(qint64 pos, qint64 len, const QByteArray &ba);
+
+
+  // Utility functions
+  /*! Calc cursor position from graphics position
+   * \param point from where the cursor position should be calculated
+   * \return Cursor position
+   */
+  qint64 cursorPosition(QPoint point);
+
+  /*! Ensure the cursor to be visbile
+   */
+  void ensureVisible();
+
+  /*! Find first occurrence of ba in QHexEdit data
+   * \param ba Data to find
+   * \param from Point where the search starts
+   * \return pos if fond, else -1
+   */
+  qint64 indexOf(const QByteArray &ba, qint64 from);
+
+  /*! Returns if any changes where done on document
+   * \return true when document is modified else false
+   */
+  bool isModified();
+
+  /*! Find last occurrence of ba in QHexEdit data
+   * \param ba Data to find
+   * \param from Point where the search starts
+   * \return pos if fond, else -1
+   */
+  qint64 lastIndexOf(const QByteArray &ba, qint64 from);
+
+  /*! Gives back a formatted image of the selected content of QHexEdit
+  */
+  QString selectionToReadableString();
+
+  /*! Return the selected content of QHexEdit as QByteArray
+  */
+  QString selectedData();
+
+  /*! Set Font of QHexEdit
+   * \param font
+   */
+  void setFont(const QFont &font);
+
+  /*! Gives back a formatted image of the content of QHexEdit
+  */
+  QString toReadableString();
+
+ public slots:
+  /*! Redoes the last operation. If there is no operation to redo, i.e.
+    there is no redo step in the undo/redo history, nothing happens.
     */
-    QHexEdit(QWidget *parent=0);
+  void redo();
 
-    // Access to data of qhexedit
-
-    /*! Gives back the data as a QByteArray starting at position \param pos and
-    delivering \param count bytes.
+  /*! Undoes the last operation. If there is no operation to undo, i.e.
+    there is no undo step in the undo/redo history, nothing happens.
     */
-    QByteArray dataAt(qint64 pos, qint64 count=-1);
+  void undo();
 
-    /*! Gives back the data into a \param iODevice starting at position \param pos
-    and delivering \param count bytes.
-    */
-    bool write(char *buffer, qint64 size, qint64 pos=0, qint64 count=-1);
+ signals:
 
+  /*! Contains the address, where the cursor is located. */
+  void currentAddressChanged(qint64 address);
 
-    // Char handling
+  /*! Contains the size of the data to edit. */
+  void currentSizeChanged(qint64 size);
 
-    /*! Inserts a char.
-    \param pos Index position, where to insert
-    \param ch Char, which is to insert
-    The char will be inserted and size of data grows.
-    */
-    void insert(qint64 pos, char ch);
+  /*! The signal is emitted every time, the data is changed. */
+  void dataChanged();
 
-    /*! Removes len bytes from the content.
-    \param pos Index position, where to remove
-    \param len Amount of bytes to remove
-    */
-    void remove(qint64 pos, qint64 len=1);
-
-    /*! Replaces a char.
-    \param pos Index position, where to overwrite
-    \param ch Char, which is to insert
-    The char will be overwritten and size remains constant.
-    */
-    void replace(qint64 pos, char ch);
-
-
-    // ByteArray handling
-
-    /*! Inserts a byte array.
-    \param pos Index position, where to insert
-    \param ba QByteArray, which is to insert
-    The QByteArray will be inserted and size of data grows.
-    */
-    void insert(qint64 pos, const QByteArray &ba);
-
-    /*! Replaces \param len bytes with a byte array \param ba
-    \param pos Index position, where to overwrite
-    \param ba QByteArray, which is inserted
-    \param len count of bytes to overwrite
-    The data is overwritten and size of data may change.
-    */
-    void replace(qint64 pos, qint64 len, const QByteArray &ba);
-
-
-    // Utility functions
-    /*! Calc cursor position from graphics position
-     * \param point from where the cursor position should be calculated
-     * \return Cursor position
-     */
-    qint64 cursorPosition(QPoint point);
-
-    /*! Ensure the cursor to be visbile
-     */
-    void ensureVisible();
-
-    /*! Find first occurrence of ba in QHexEdit data
-     * \param ba Data to find
-     * \param from Point where the search starts
-     * \return pos if fond, else -1
-     */
-    qint64 indexOf(const QByteArray &ba, qint64 from);
-
-    /*! Returns if any changes where done on document
-     * \return true when document is modified else false
-     */
-    bool isModified();
-
-    /*! Find last occurrence of ba in QHexEdit data
-     * \param ba Data to find
-     * \param from Point where the search starts
-     * \return pos if fond, else -1
-     */
-    qint64 lastIndexOf(const QByteArray &ba, qint64 from);
-
-    /*! Gives back a formatted image of the selected content of QHexEdit
-    */
-    QString selectionToReadableString();
-
-    /*! Return the selected content of QHexEdit as QByteArray
-    */
-    QString selectedData();
-
-    /*! Set Font of QHexEdit
-     * \param font
-     */
-    void setFont(const QFont &font);
-
-    /*! Gives back a formatted image of the content of QHexEdit
-    */
-    QString toReadableString();
-
-
-public slots:
-    /*! Redoes the last operation. If there is no operation to redo, i.e.
-      there is no redo step in the undo/redo history, nothing happens.
-      */
-    void redo();
-
-    /*! Undoes the last operation. If there is no operation to undo, i.e.
-      there is no undo step in the undo/redo history, nothing happens.
-      */
-    void undo();
-
-signals:
-
-    /*! Contains the address, where the cursor is located. */
-    void currentAddressChanged(qint64 address);
-
-    /*! Contains the size of the data to edit. */
-    void currentSizeChanged(qint64 size);
-
-    /*! The signal is emitted every time, the data is changed. */
-    void dataChanged();
-
-    /*! The signal is emitted every time, the overwrite mode is changed. */
-    void overwriteModeChanged(bool state);
+  /*! The signal is emitted every time, the overwrite mode is changed. */
+  void overwriteModeChanged(bool state);
 
 
 /*! \cond docNever */
-public:
-    ~QHexEdit();
+ public:
+  ~QHexEdit();
 
-    // Properties
-    bool addressArea();
-    void setAddressArea(bool addressArea);
+  // Properties
+  bool addressArea();
+  void setAddressArea(bool addressArea);
 
-    QColor addressAreaColor();
-    void setAddressAreaColor(const QColor &color);
+  QColor addressAreaColor();
+  void setAddressAreaColor(const QColor &color);
 
-    qint64 addressOffset();
-    void setAddressOffset(qint64 addressArea);
+  qint64 addressOffset();
+  void setAddressOffset(qint64 addressArea);
 
-    int addressWidth();
-    void setAddressWidth(int addressWidth);
+  int addressWidth();
+  void setAddressWidth(int addressWidth);
 
-    bool asciiArea();
-    void setAsciiArea(bool asciiArea);
+  bool asciiArea();
+  void setAsciiArea(bool asciiArea);
 
-    int bytesPerLine();
-    void setBytesPerLine(int count);
+  int bytesPerLine();
+  void setBytesPerLine(int count);
 
-    qint64 cursorPosition();
-    void setCursorPosition(qint64 position);
+  qint64 cursorPosition();
+  void setCursorPosition(qint64 position);
 
-    QByteArray data();
-    void setData(const char *ba, size_t size);
+  QByteArray data();
+  void setData(const char *ba, size_t size);
 
-    void refreshData();
+  void refreshData();
 
-    void setHexCaps(const bool isCaps);
-    bool hexCaps();
+  void setHexCaps(const bool isCaps);
+  bool hexCaps();
 
-    void setDynamicBytesPerLine(const bool isDynamic);
-    bool dynamicBytesPerLine();
+  void setDynamicBytesPerLine(const bool isDynamic);
+  bool dynamicBytesPerLine();
 
-    bool highlighting();
-    void setHighlighting(bool mode);
+  bool highlighting();
+  void setHighlighting(bool mode);
 
-    QColor highlightingColor();
-    void setHighlightingColor(const QColor &color);
+  QColor highlightingColor();
+  void setHighlightingColor(const QColor &color);
 
-    bool overwriteMode();
-    void setOverwriteMode(bool overwriteMode);
+  bool overwriteMode();
+  void setOverwriteMode(bool overwriteMode);
 
-    bool isReadOnly();
-    void setReadOnly(bool readOnly);
+  bool isReadOnly();
+  void setReadOnly(bool readOnly);
 
-    QColor selectionColor();
-    void setSelectionColor(const QColor &color);
+  QColor selectionColor();
+  void setSelectionColor(const QColor &color);
 
-protected:
-    // Handle events
-    void keyPressEvent(QKeyEvent *event);
-    void mouseMoveEvent(QMouseEvent * event);
-    void mousePressEvent(QMouseEvent * event);
-    void paintEvent(QPaintEvent *event);
-    void resizeEvent(QResizeEvent *);
-    virtual bool focusNextPrevChild(bool next);
-private:
-    // Handle selections
-    void resetSelection(qint64 pos);            // set selectionStart and selectionEnd to pos
-    void resetSelection();                      // set selectionEnd to selectionStart
-    void setSelection(qint64 pos);              // set min (if below init) or max (if greater init)
-    qint64 getSelectionBegin();
-    qint64 getSelectionEnd();
+ protected:
+  // Handle events
+  void keyPressEvent(QKeyEvent *event);
+  void mouseMoveEvent(QMouseEvent *event);
+  void mousePressEvent(QMouseEvent *event);
+  void paintEvent(QPaintEvent *event);
+  void resizeEvent(QResizeEvent *);
+  virtual bool focusNextPrevChild(bool next);
+ private:
+  // Handle selections
+  void resetSelection(qint64 pos);            // set selectionStart and selectionEnd to pos
+  void resetSelection();                      // set selectionEnd to selectionStart
+  void setSelection(qint64 pos);              // set min (if below init) or max (if greater init)
+  qint64 getSelectionBegin();
+  qint64 getSelectionEnd();
 
-    // Private utility functions
-    void init();
-    void readBuffers();
-    QString toReadable(const QByteArray &ba);
+  // Private utility functions
+  void init();
+  void readBuffers();
+  QString toReadable(const QByteArray &ba);
 
-private slots:
-    void adjust();                              // recalc pixel positions
-    void dataChangedPrivate(int idx=0);         // emit dataChanged() signal
-    void refresh();                             // ensureVisible() and readBuffers()
-    void updateCursor();                        // update blinking cursor
+ private slots:
+  void adjust();                              // recalc pixel positions
+  void dataChangedPrivate(int idx = 0);         // emit dataChanged() signal
+  void refresh();                             // ensureVisible() and readBuffers()
+  void updateCursor();                        // update blinking cursor
 
-private:
-    // Name convention: pixel positions start with _px
-    int _pxCharWidth, _pxCharHeight;            // char dimensions (dependend on font)
-    int _pxPosHexX;                             // X-Pos of HeaxArea
-    int _pxPosAdrX;                             // X-Pos of Address Area
-    int _pxPosAsciiX;                           // X-Pos of Ascii Area
-    int _pxGapAdr;                              // gap left from AddressArea
-    int _pxGapAdrHex;                           // gap between AddressArea and HexAerea
-    int _pxGapHexAscii;                         // gap between HexArea and AsciiArea
-    int _pxCursorWidth;                         // cursor width
-    int _pxSelectionSub;                        // offset selection rect
-    int _pxCursorX;                             // current cursor pos
-    int _pxCursorY;                             // current cursor pos
+ private:
+  // Name convention: pixel positions start with _px
+  int _pxCharWidth, _pxCharHeight;            // char dimensions (dependend on font)
+  int _pxPosHexX;                             // X-Pos of HeaxArea
+  int _pxPosAdrX;                             // X-Pos of Address Area
+  int _pxPosAsciiX;                           // X-Pos of Ascii Area
+  int _pxGapAdr;                              // gap left from AddressArea
+  int _pxGapAdrHex;                           // gap between AddressArea and HexAerea
+  int _pxGapHexAscii;                         // gap between HexArea and AsciiArea
+  int _pxCursorWidth;                         // cursor width
+  int _pxSelectionSub;                        // offset selection rect
+  int _pxCursorX;                             // current cursor pos
+  int _pxCursorY;                             // current cursor pos
 
-    // Name convention: absolute byte positions in chunks start with _b
-    qint64 _bSelectionBegin;                    // first position of Selection
-    qint64 _bSelectionEnd;                      // end of Selection
-    qint64 _bSelectionInit;                     // memory position of Selection
-    qint64 _bPosFirst;                          // position of first byte shown
-    qint64 _bPosLast;                           // position of last byte shown
-    qint64 _bPosCurrent;                        // current position
+  // Name convention: absolute byte positions in chunks start with _b
+  qint64 _bSelectionBegin;                    // first position of Selection
+  qint64 _bSelectionEnd;                      // end of Selection
+  qint64 _bSelectionInit;                     // memory position of Selection
+  qint64 _bPosFirst;                          // position of first byte shown
+  qint64 _bPosLast;                           // position of last byte shown
+  qint64 _bPosCurrent;                        // current position
 
-    // variables to store the property values
-    bool _addressArea;                          // left area of QHexEdit
-    QColor _addressAreaColor;
-    int _addressWidth;
-    bool _asciiArea;
-    qint64 _addressOffset;
-    int _bytesPerLine;
-    int _hexCharsInLine;
-    bool _highlighting;
-    bool _overwriteMode;
-    QBrush _brushSelection;
-    QPen _penSelection;
-    QBrush _brushHighlighted;
-    QPen _penHighlighted;
-    bool _readOnly;
-    bool _hexCaps;
-    bool _dynamicBytesPerLine;
+  // variables to store the property values
+  bool _addressArea;                          // left area of QHexEdit
+  QColor _addressAreaColor;
+  int _addressWidth;
+  bool _asciiArea;
+  qint64 _addressOffset;
+  int _bytesPerLine;
+  int _hexCharsInLine;
+  bool _highlighting;
+  bool _overwriteMode;
+  QBrush _brushSelection;
+  QPen _penSelection;
+  QBrush _brushHighlighted;
+  QPen _penHighlighted;
+  bool _readOnly;
+  bool _hexCaps;
+  bool _dynamicBytesPerLine;
 
-    // other variables
-    bool _editAreaIsAscii;                      // flag about the ascii mode edited
-    int _addrDigits;                            // real no of addressdigits, may be > addressWidth
-    bool _blink;                                // help get cursor blinking
-    Chunks *_chunks;                            // IODevice based access to data
-    QTimer _cursorTimer;                        // for blinking cursor
-    qint64 _cursorPosition;                     // absolute position of cursor, 1 Byte == 2 tics
-    QRect _cursorRect;                          // physical dimensions of cursor
-    QByteArray _dataShown;                      // data in the current View
-    QByteArray _hexDataShown;                   // data in view, transformed to hex
-    qint64 _lastEventSize;                      // size, which was emitted last time
-    QByteArray _markedShown;                    // marked data in view
-    bool _modified;                             // Is any data in editor modified?
-    int _rowsShown;                             // lines of text shown
-    UndoStack * _undoStack;                     // Stack to store edit actions for undo/redo
-    /*! \endcond docNever */
+  // other variables
+  bool _editAreaIsAscii;                      // flag about the ascii mode edited
+  int _addrDigits;                            // real no of addressdigits, may be > addressWidth
+  bool _blink;                                // help get cursor blinking
+  Chunks *_chunks;                            // IODevice based access to data
+  QTimer _cursorTimer;                        // for blinking cursor
+  qint64 _cursorPosition;                     // absolute position of cursor, 1 Byte == 2 tics
+  QRect _cursorRect;                          // physical dimensions of cursor
+  QByteArray _dataShown;                      // data in the current View
+  QByteArray _hexDataShown;                   // data in view, transformed to hex
+  qint64 _lastEventSize;                      // size, which was emitted last time
+  QByteArray _markedShown;                    // marked data in view
+  bool _modified;                             // Is any data in editor modified?
+  int _rowsShown;                             // lines of text shown
+  UndoStack *_undoStack;                     // Stack to store edit actions for undo/redo
+  /*! \endcond docNever */
 };
 
 #endif // QHEXEDIT_H

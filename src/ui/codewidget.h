@@ -6,24 +6,23 @@
 
 #include "src/simulator/simulator.h"
 
-class CodeWidget : public QPlainTextEdit
-{
-    Q_OBJECT
-public:
+class CodeWidget : public QPlainTextEdit {
+ Q_OBJECT
+ public:
   explicit CodeWidget(QWidget *parent = nullptr);
 
-    void setSimulator(Simulator *sim);
+  void setSimulator(Simulator *sim);
 
-    void setBreakpoints(QVector<Breakpoint*> *breakpoints);
+  void setBreakpoints(QVector<Breakpoint *> *breakpoints);
 
-    void refresh();
+  void refresh();
 
-protected:
-    void contextMenuEvent(QContextMenuEvent *e) override;
+ protected:
+  void contextMenuEvent(QContextMenuEvent *e) override;
 
-private:
-    Simulator *m_simulator = nullptr;
-    QVector<Breakpoint*> *m_breakpoints = nullptr;
+ private:
+  Simulator *m_simulator = nullptr;
+  QVector<Breakpoint *> *m_breakpoints = nullptr;
 };
 
 #endif // CODEWIDGET_H

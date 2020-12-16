@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-set (SOURCE
+set(SOURCE
         src/main.cpp
         src/ui/mainwindow.cpp
         src/ui/mainwindow.h
@@ -44,8 +44,7 @@ set (SOURCE
         src/ui/codewidget.h
         src/options.cpp
         src/options.h
-    )
-
+        )
 
 
 add_executable(Z80Debug ${SOURCE})
