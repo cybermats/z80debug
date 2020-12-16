@@ -60,89 +60,6 @@ class QHEXEDIT_API QHexEdit : public QAbstractScrollArea
 {
     Q_OBJECT
 
-    /*! Property address area switch the address area on or off. Set addressArea true
-    (show it), false (hide it).
-    */
-    Q_PROPERTY(bool addressArea READ addressArea WRITE setAddressArea)
-
-    /*! Property address area color sets (setAddressAreaColor()) the background
-    color of address areas. You can also read the color (addressAreaColor()).
-    */
-    Q_PROPERTY(QColor addressAreaColor READ addressAreaColor WRITE setAddressAreaColor)
-
-    /*! Property addressOffset is added to the Numbers of the Address Area.
-    A offset in the address area (left side) is sometimes useful, whe you show
-    only a segment of a complete memory picture. With setAddressOffset() you set
-    this property - with addressOffset() you get the current value.
-    */
-    Q_PROPERTY(qint64 addressOffset READ addressOffset WRITE setAddressOffset)
-
-    /*! Set and get the minimum width of the address area, width in characters.
-    */
-    Q_PROPERTY(int addressWidth READ addressWidth WRITE setAddressWidth)
-
-    /*! Switch the ascii area on (true, show it) or off (false, hide it).
-    */
-    Q_PROPERTY(bool asciiArea READ asciiArea WRITE setAsciiArea)
-
-    /*! Set and get bytes number per line.*/
-    Q_PROPERTY(int bytesPerLine READ bytesPerLine WRITE setBytesPerLine)
-
-    /*! Property cursorPosition sets or gets the position of the editor cursor
-    in QHexEdit. Every byte in data has two cursor positions: the lower and upper
-    Nibble. Maximum cursor position is factor two of data.size().
-    */
-    Q_PROPERTY(qint64 cursorPosition READ cursorPosition WRITE setCursorPosition)
-
-    /*! Property data holds the content of QHexEdit. Call setData() to set the
-    content of QHexEdit, data() returns the actual content. When calling setData()
-    with a QByteArray as argument, QHexEdit creates a internal copy of the data
-    If you want to edit big files please use setData(), based on QIODevice.
-    */
-    Q_PROPERTY(QByteArray data READ data WRITE setData NOTIFY dataChanged)
-
-    /*! That property defines if the hex values looks as a-f if the value is false(default)
-    or A-F if value is true.
-    */
-    Q_PROPERTY(bool hexCaps READ hexCaps WRITE setHexCaps)
-
-    /*! Property defines the dynamic calculation of bytesPerLine parameter depends of width of widget.
-    set this property true to avoid horizontal scrollbars and show the maximal possible data. defalut value is false*/
-    Q_PROPERTY(bool dynamicBytesPerLine READ dynamicBytesPerLine WRITE setDynamicBytesPerLine)
-
-    /*! Switch the highlighting feature on or of: true (show it), false (hide it).
-    */
-    Q_PROPERTY(bool highlighting READ highlighting WRITE setHighlighting)
-
-    /*! Property highlighting color sets (setHighlightingColor()) the background
-    color of highlighted text areas. You can also read the color
-    (highlightingColor()).
-    */
-    Q_PROPERTY(QColor highlightingColor READ highlightingColor WRITE setHighlightingColor)
-
-    /*! Property overwrite mode sets (setOverwriteMode()) or gets (overwriteMode()) the mode
-    in which the editor works. In overwrite mode the user will overwrite existing data. The
-    size of data will be constant. In insert mode the size will grow, when inserting
-    new data.
-    */
-    Q_PROPERTY(bool overwriteMode READ overwriteMode WRITE setOverwriteMode)
-
-    /*! Property selection color sets (setSelectionColor()) the background
-    color of selected text areas. You can also read the color
-    (selectionColor()).
-    */
-    Q_PROPERTY(QColor selectionColor READ selectionColor WRITE setSelectionColor)
-
-    /*! Property readOnly sets (setReadOnly()) or gets (isReadOnly) the mode
-    in which the editor works. In readonly mode the the user can only navigate
-    through the data and select data; modifying is not possible. This
-    property's default is false.
-    */
-    Q_PROPERTY(bool readOnly READ isReadOnly WRITE setReadOnly)
-
-    /*! Set the font of the widget. Please use fixed width fonts like Mono or Courier.*/
-    Q_PROPERTY(QFont font READ font WRITE setFont)
-
 public:
     /*! Creates an instance of QHexEdit.
     \param parent Parent widget of QHexEdit.
@@ -150,12 +67,6 @@ public:
     QHexEdit(QWidget *parent=0);
 
     // Access to data of qhexedit
-
-    /*! Sets the data of QHexEdit. The QIODevice will be opened just before reading
-    and closed immediately afterwards. This is to allow other programs to rewrite
-    the file while editing it.
-    */
-    bool setData(QIODevice &iODevice);
 
     /*! Gives back the data as a QByteArray starting at position \param pos and
     delivering \param count bytes.
@@ -165,7 +76,7 @@ public:
     /*! Gives back the data into a \param iODevice starting at position \param pos
     and delivering \param count bytes.
     */
-    bool write(QIODevice &iODevice, qint64 pos=0, qint64 count=-1);
+    bool write(char *buffer, qint64 size, qint64 pos=0, qint64 count=-1);
 
 
     // Char handling
@@ -310,7 +221,9 @@ public:
     void setCursorPosition(qint64 position);
 
     QByteArray data();
-    void setData(const QByteArray &ba);
+    void setData(const char *ba, size_t size);
+
+    void refreshData();
 
     void setHexCaps(const bool isCaps);
     bool hexCaps();
@@ -404,12 +317,10 @@ private:
     bool _editAreaIsAscii;                      // flag about the ascii mode edited
     int _addrDigits;                            // real no of addressdigits, may be > addressWidth
     bool _blink;                                // help get cursor blinking
-    QBuffer _bData;                             // buffer, when setup with QByteArray
     Chunks *_chunks;                            // IODevice based access to data
     QTimer _cursorTimer;                        // for blinking cursor
     qint64 _cursorPosition;                     // absolute position of cursor, 1 Byte == 2 tics
     QRect _cursorRect;                          // physical dimensions of cursor
-    QByteArray _data;                           // QHexEdit's data, when setup with QByteArray
     QByteArray _dataShown;                      // data in the current View
     QByteArray _hexDataShown;                   // data in view, transformed to hex
     qint64 _lastEventSize;                      // size, which was emitted last time

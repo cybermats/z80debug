@@ -18,7 +18,8 @@ MainWindow::MainWindow(Simulator *sim, Options *options, QWidget *parent)
     ui->setupUi(this);
     ui->treeView->setModel(&m_regModel);
     ui->treeView->expandToDepth(0);
-    ui->hexEdit->setData(QByteArray(m_simulator->memPtr(), m_simulator->memSize()));
+    ui->hexEdit->setBytesPerLine(8);
+    ui->hexEdit->setData(m_simulator->memPtr(), m_simulator->memSize());
     ui->codeTextEdit->setSimulator(m_simulator);
     ui->codeTextEdit->setBreakpoints(&m_breakpoints);
     m_loadDialog = new LoadDialog(this);
@@ -40,7 +41,7 @@ void MainWindow::on_actionLoad_triggered()
     auto filename = QFileDialog::getOpenFileName(this,
                                                  "Open Image", "", "Image Files (*.img *.bin);;(*.*)");
     loadFile(filename);
-    ui->hexEdit->setData(QByteArray(m_simulator->memPtr(), m_simulator->memSize()));
+    ui->hexEdit->setData(m_simulator->memPtr(), m_simulator->memSize());
     refresh();
 }
 
@@ -52,18 +53,21 @@ void MainWindow::on_actionLoad_finished(int result)
             loadFile(fileinfo.filename, fileinfo.address, fileinfo.offset, fileinfo.length);
             m_simulator->load(fileinfo.filename, fileinfo.address, fileinfo.offset, fileinfo.length);
         }
-        ui->hexEdit->setData(QByteArray(m_simulator->memPtr(), m_simulator->memSize()));
+        ui->hexEdit->setData(m_simulator->memPtr(), m_simulator->memSize());
     }
 }
 
 void MainWindow::on_actionReset_triggered()
 {
+    ui->hexEdit->write(m_simulator->memPtr(), m_simulator->memSize());
+    m_regModel.benchmark();
     m_simulator->reset();
     refresh();
 }
 
 void MainWindow::on_actionStep_triggered()
 {
+    ui->hexEdit->write(m_simulator->memPtr(), m_simulator->memSize());
     m_regModel.benchmark();
     m_simulator->step();
     refresh();
@@ -85,9 +89,7 @@ void MainWindow::on_actionLoad_many_triggered()
 
 void MainWindow::refresh()
 {
-    auto cursorPos = ui->hexEdit->cursorPosition();
-    ui->hexEdit->setData(QByteArray(m_simulator->memPtr(), m_simulator->memSize()));
-    ui->hexEdit->setCursorPosition(cursorPos);
+    ui->hexEdit->refreshData();
 
     m_regModel.update();
     ui->opLabel->setText(m_simulator->operation());

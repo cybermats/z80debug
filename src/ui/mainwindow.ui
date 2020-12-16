@@ -50,17 +50,11 @@
            <height>0</height>
           </size>
          </property>
-         <property name="toolTip">
-          <string>QHexEditWidget</string>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
          </property>
-         <property name="whatsThis">
-          <string>QHexEdit widget allow to edit the data in hex view.</string>
-         </property>
-         <property name="bytesPerLine">
-          <number>8</number>
-         </property>
-         <property name="data">
-          <cstring></cstring>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
          </property>
         </widget>
         <widget class="QWidget" name="layoutWidget">
@@ -220,14 +214,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QHexEdit</class>
-   <extends>QFrame</extends>
-   <header>src/qhexedit/qhexedit.h</header>
-  </customwidget>
-  <customwidget>
    <class>CodeWidget</class>
    <extends>QPlainTextEdit</extends>
    <header>src/ui/codewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QHexEdit</class>
+   <extends>QFrame</extends>
+   <header>src/qhexedit/qhexedit.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

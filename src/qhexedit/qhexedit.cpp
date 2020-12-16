@@ -219,12 +219,20 @@ qint64 QHexEdit::cursorPosition()
     return _cursorPosition;
 }
 
-void QHexEdit::setData(const QByteArray &ba)
+void QHexEdit::setData(const char *ba, size_t size)
 {
-    _data = ba;
-    _bData.setData(_data);
-    setData(_bData);
+  bool ok = _chunks->setData(ba, size);
+  init();
+  dataChangedPrivate();
 }
+
+void QHexEdit::refreshData() {
+  //dataChangedPrivate();
+  _chunks->refresh();
+  _undoStack->clear();
+  refresh();
+}
+
 
 QByteArray QHexEdit::data()
 {
@@ -312,23 +320,14 @@ bool QHexEdit::dynamicBytesPerLine()
     return _dynamicBytesPerLine;
 }
 
-// ********************************************************************** Access to data of qhexedit
-bool QHexEdit::setData(QIODevice &iODevice)
-{
-    bool ok = _chunks->setIODevice(iODevice);
-    init();
-    dataChangedPrivate();
-    return ok;
-}
-
 QByteArray QHexEdit::dataAt(qint64 pos, qint64 count)
 {
     return _chunks->data(pos, count);
 }
 
-bool QHexEdit::write(QIODevice &iODevice, qint64 pos, qint64 count)
+bool QHexEdit::write(char *buffer, qint64 size, qint64 pos, qint64 count)
 {
-    return _chunks->write(iODevice, pos, count);
+    return _chunks->write(buffer, size, pos, count);
 }
 
 // ********************************************************************** Char handling

@@ -32,12 +32,12 @@ Q_OBJECT
 public:
     // Constructors and file settings
     Chunks(QObject *parent);
-    Chunks(QIODevice &ioDevice, QObject *parent);
-    bool setIODevice(QIODevice &ioDevice);
+    bool setData(const char *buffer, qint64 size);
+    void refresh();
 
     // Getting data out of Chunks
     QByteArray data(qint64 pos=0, qint64 count=-1, QByteArray *highlighted=0);
-    bool write(QIODevice &iODevice, qint64 pos=0, qint64 count=-1);
+    bool write(char *buffer, qint64 size, qint64 pos=0, qint64 count=-1);
 
     // Set and get highlighting infos
     void setDataChanged(qint64 pos, bool dataChanged);
@@ -61,7 +61,7 @@ public:
 private:
     int getChunkIndex(qint64 absPos);
 
-    QIODevice * _ioDevice;
+    const char *_buffer;
     qint64 _pos;
     qint64 _size;
     QList<Chunk> _chunks;
