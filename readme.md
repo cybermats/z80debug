@@ -25,6 +25,8 @@ It should hopefully be straightforward to build based on the CMakeLists.txt.
 * Conditional breakpoints
 * IO handling (currently completely ignored. IN returns 0).
 * Editing and compiling.
+* Add options dialog.
+* Add support for disassembly to get code.
 
 ## Licenses
 This software is released under [GPL v3](license.md).
