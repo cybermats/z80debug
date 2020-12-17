@@ -5,6 +5,7 @@
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "highlighter.h"
 
 MainWindow::MainWindow(Simulator *sim, Options *options, QWidget *parent)
     : QMainWindow(parent),
@@ -20,6 +21,8 @@ MainWindow::MainWindow(Simulator *sim, Options *options, QWidget *parent)
   ui->hexEdit->setData(m_simulator->memPtr(), m_simulator->memSize());
   ui->codeTextEdit->setSimulator(m_simulator);
   ui->codeTextEdit->setBreakpoints(&m_breakpoints);
+  if (m_options->syntaxHighlighting())
+    ui->codeTextEdit->setSyntaxHighlighter(new Highlighter());
 
   connect(m_loadDialog, &LoadDialog::finished, this, &MainWindow::onActionLoad_finished);
   connect(ui->stepButton, &QPushButton::released, this, &MainWindow::on_actionStep_triggered);

@@ -1,10 +1,10 @@
 #include <QMenu>
 #include <QDebug>
 #include "codewidget.h"
+#include "highlighter.h"
 
 CodeWidget::CodeWidget(QWidget *parent)
     : QPlainTextEdit(parent) {
-
 }
 
 void CodeWidget::setSimulator(Simulator *sim) {
@@ -93,4 +93,15 @@ void CodeWidget::contextMenuEvent(QContextMenuEvent *e) {
   delete menu;
   if (updated)
     refresh();
+}
+CodeWidget::~CodeWidget() {
+  delete m_highlighter;
+}
+void CodeWidget::setSyntaxHighlighter(Highlighter *highlighter) {
+  if (m_highlighter)
+    delete m_highlighter;
+  m_highlighter = highlighter;
+  if (m_highlighter)
+    m_highlighter->setDocument(document());
+
 }

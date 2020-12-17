@@ -44,7 +44,8 @@ set(SOURCE
         src/ui/codewidget.h
         src/options.cpp
         src/options.h
-        )
+        src/ui/highlighter.cpp
+        src/ui/highlighter.h)
 
 
 add_executable(Z80Debug ${SOURCE})
